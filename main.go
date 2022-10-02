@@ -80,8 +80,8 @@ func parseCliCommand() (filePath string, target string, fileDestination string) 
 
 func main() {
 	filePath, target, fileDestination := parseCliCommand()
-  err := readAndWriteToFile(filePath, target, fileDestination)
-  if err != nil{
-    fmt.Println("Error:", err.Error())
-  }
+	err := readAndWriteToFile(filePath, target, fileDestination)
+	if err != nil {
+		fmt.Println("Error:", err.Error())
+	}
 }
