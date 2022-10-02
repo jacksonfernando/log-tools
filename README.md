@@ -18,6 +18,7 @@ Tools for converting log file to json or plaintext
 ```
 ## Notes
 * when converting log files to json it only can read to int32(2.147.483.647 lines). Feel free to increase the size in the `main.go` line 62 and 63
+
 ![image](https://user-images.githubusercontent.com/33139248/193443133-dea2ec16-e6f2-4fac-a7e5-3699f6dbff45.png)
 ## Screenshot
 * json output
