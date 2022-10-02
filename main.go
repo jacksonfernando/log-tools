@@ -10,6 +10,10 @@ import (
 
 func writeToFile(
 	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
+  if(fileDestination == "") {
+    fileInfo, _ := filePath.Stat()
+    fileDestination = "./" + fileInfo.Name()
+  }
 	fileDst, err := os.Create(fileDestination)
 	if err != nil {
 		return err
