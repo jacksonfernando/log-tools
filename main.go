@@ -11,28 +11,28 @@ import (
 )
 
 type LogJson struct {
-  Logs []string
+	Logs []string
 }
 
-func (l *LogJson) appendToLogs (value string){
-  l.Logs = append(l.Logs, value);
+func (l *LogJson) appendToLogs(value string) {
+	l.Logs = append(l.Logs, value)
 }
 
-func defineFileExtension(filePath os.File, target string, fileDestination string) string{
+func defineFileExtension(filePath os.File, target string, fileDestination string) string {
 	if fileDestination == "" {
 		fileInfo, _ := filePath.Stat()
-    fileExtension := ".text";
-    if(target == "json"){
-      fileExtension = ".json"
-    }
-		fileDestination =  strings.Split(fileInfo.Name(), ".")[0] + fileExtension
+		fileExtension := ".text"
+		if target == "json" {
+			fileExtension = ".json"
+		}
+		fileDestination = strings.Split(fileInfo.Name(), ".")[0] + fileExtension
 	}
-  return fileDestination
+	return fileDestination
 }
 
 func writeToFile(
 	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
-  fileDestination = defineFileExtension(filePath, target, fileDestination)
+	fileDestination = defineFileExtension(filePath, target, fileDestination)
 	fileDst, err := os.Create(fileDestination)
 	if err != nil {
 		return err
@@ -42,12 +42,12 @@ func writeToFile(
 		return nil
 	}
 	defer fileDst.Close()
-  logJson := LogJson{}
+	logJson := LogJson{}
 	for scanner.Scan() {
-    logJson.appendToLogs(scanner.Text())
+		logJson.appendToLogs(scanner.Text())
 	}
-  content , _ := json.Marshal(logJson);
-  _ = ioutil.WriteFile(fileDestination, content, 0644)
+	content, _ := json.Marshal(logJson)
+	_ = ioutil.WriteFile(fileDestination, content, 0644)
 	return nil
 }
 
