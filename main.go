@@ -4,36 +4,51 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 )
 
-func readAndWriteFile(filePath string, target string) error{
-  if(target == "" || target == "text"){
+func writeToFile(
+	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
+	fileDst, err := os.Create(fileDestination)
+	if err != nil {
+		return err
+	}
+  if(target == "text" || target == ""){
+    io.Copy(fileDst, &filePath)
+    return nil;
   }
-  file, err := os.Open(filePath)
-  if err != nil{
-    return err;
-  }
-  defer file.Close()
-  scanner := bufio.NewScanner(file)
-  for scanner.Scan() {
-    fmt.Println(scanner.Text())
-  }
-  if err := scanner.Err(); err != nil{
-    return err;
-  }
-  return nil
+	defer fileDst.Close()
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	return nil
 }
 
-func parseCliCommand() (filePath string, target string, output string) {
+func readAndWriteToFile(filePath string, target string, fileDestination string) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	writeToFile(*file, target, *scanner, fileDestination)
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func parseCliCommand() (filePath string, target string, fileDestination string) {
 	filePath = os.Args[1]
 	mySet := flag.NewFlagSet("", flag.ExitOnError)
-	mySet.StringVar(&target, "t", "", "Target of command")
-	mySet.StringVar(&output, "o", "", "Output of command")
+	mySet.StringVar(&target, "t", "", "File type of log file")
+	mySet.StringVar(&fileDestination, "o", "", "File destination of log file")
 	mySet.Parse(os.Args[2:])
-	return filePath, target, output
+	return filePath, target, fileDestination
 }
+
 func main() {
-	filePath, target, _ := parseCliCommand()
-  readAndWriteFile(filePath, target)
+	filePath, target, fileDestination := parseCliCommand()
+	readAndWriteToFile(filePath, target, fileDestination)
 }
