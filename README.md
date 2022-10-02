@@ -18,5 +18,8 @@ Tools for converting log file to json or plaintext
 ```
 ## Screenshot
 * json output
+![json_output_image](https://github.com/jacksonfernando/log-tools/blob/main/pictures/converted_json.PNG)
+* text output
+![json_output_image](https://github.com/jacksonfernando/log-tools/blob/main/pictures/converted_text.PNG)
 
 
