@@ -10,18 +10,18 @@ import (
 
 func writeToFile(
 	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
-  if(fileDestination == "") {
-    fileInfo, _ := filePath.Stat()
-    fileDestination = "./" + fileInfo.Name()
-  }
+	if fileDestination == "" {
+		fileInfo, _ := filePath.Stat()
+		fileDestination = "./" + fileInfo.Name()
+	}
 	fileDst, err := os.Create(fileDestination)
 	if err != nil {
 		return err
 	}
-  if(target == "text" || target == ""){
-    io.Copy(fileDst, &filePath)
-    return nil;
-  }
+	if target == "text" || target == "" {
+		io.Copy(fileDst, &filePath)
+		return nil
+	}
 	defer fileDst.Close()
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
