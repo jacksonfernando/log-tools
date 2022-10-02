@@ -11,7 +11,7 @@ type userInput struct {
 	target string
 }
 
-func parseCommand() (filepath string, target string, output string) {
+func parseCliCommand() (filepath string, target string, output string) {
 	filepath = os.Args[1]
 	mySet := flag.NewFlagSet("", flag.ExitOnError)
 	mySet.StringVar(&target, "t", "", "target of command")
@@ -20,6 +20,6 @@ func parseCommand() (filepath string, target string, output string) {
 	return filepath, target, output
 }
 func main() {
-	filepath, target, output := parseCommand()
+	filepath, target, output := parseCliCommand()
 	fmt.Println(filepath, target, output)
 }
