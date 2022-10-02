@@ -1,7 +1,7 @@
 # LOG TOOLS
 Tools for converting log file to json or plaintext
 ## Tools usage
-* Execute log-tools binary using ./ command `./log-tools`. Example can be seen below.
+* Execute log-tools binary using `./log-tools` command. Example can be seen below.
 * usage : `./log-tools [FILE] [OPTIONS]...`
 ### OPTIONS
 ```bash
