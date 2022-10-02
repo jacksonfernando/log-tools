@@ -59,8 +59,8 @@ func readAndWriteToFile(filePath string, target string, fileDestination string) 
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-  buffer := make([]byte, math.MaxInt32)
-  scanner.Buffer(buffer, math.MaxInt32)
+	buffer := make([]byte, math.MaxInt32)
+	scanner.Buffer(buffer, math.MaxInt32)
 	writeToFile(*file, target, *scanner, fileDestination)
 	if err := scanner.Err(); err != nil {
 		return err
