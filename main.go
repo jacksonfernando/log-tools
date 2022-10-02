@@ -2,19 +2,37 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
-	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
 
-func writeToFile(
-	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
+type LogJson struct {
+  Logs []string
+}
+
+func (l *LogJson) appendToLogs (value string){
+  l.Logs = append(l.Logs, value);
+}
+
+func defineFileExtension(filePath os.File, target string, fileDestination string) string{
 	if fileDestination == "" {
 		fileInfo, _ := filePath.Stat()
-		fileDestination = "./" + strings.Split(fileInfo.Name(), ".")[0] + ".text"
+    fileExtension := ".text";
+    if(target == "json"){
+      fileExtension = ".json"
+    }
+		fileDestination =  strings.Split(fileInfo.Name(), ".")[0] + fileExtension
 	}
+  return fileDestination
+}
+
+func writeToFile(
+	filePath os.File, target string, scanner bufio.Scanner, fileDestination string) error {
+  fileDestination = defineFileExtension(filePath, target, fileDestination)
 	fileDst, err := os.Create(fileDestination)
 	if err != nil {
 		return err
@@ -24,9 +42,12 @@ func writeToFile(
 		return nil
 	}
 	defer fileDst.Close()
+  logJson := LogJson{}
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+    logJson.appendToLogs(scanner.Text())
 	}
+  content , _ := json.Marshal(logJson);
+  _ = ioutil.WriteFile(fileDestination, content, 0644)
 	return nil
 }
 
