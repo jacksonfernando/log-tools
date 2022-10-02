@@ -1,25 +1,39 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
 )
 
-type userInput struct {
-	output string
-	target string
+func readAndWriteFile(filePath string, target string) error{
+  if(target == "" || target == "text"){
+  }
+  file, err := os.Open(filePath)
+  if err != nil{
+    return err;
+  }
+  defer file.Close()
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    fmt.Println(scanner.Text())
+  }
+  if err := scanner.Err(); err != nil{
+    return err;
+  }
+  return nil
 }
 
-func parseCliCommand() (filepath string, target string, output string) {
-	filepath = os.Args[1]
+func parseCliCommand() (filePath string, target string, output string) {
+	filePath = os.Args[1]
 	mySet := flag.NewFlagSet("", flag.ExitOnError)
-	mySet.StringVar(&target, "t", "", "target of command")
-	mySet.StringVar(&output, "o", "", "output of command")
+	mySet.StringVar(&target, "t", "", "Target of command")
+	mySet.StringVar(&output, "o", "", "Output of command")
 	mySet.Parse(os.Args[2:])
-	return filepath, target, output
+	return filePath, target, output
 }
 func main() {
-	filepath, target, output := parseCliCommand()
-	fmt.Println(filepath, target, output)
+	filePath, target, _ := parseCliCommand()
+  readAndWriteFile(filePath, target)
 }
