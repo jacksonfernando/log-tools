@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"math"
@@ -79,5 +80,8 @@ func parseCliCommand() (filePath string, target string, fileDestination string) 
 
 func main() {
 	filePath, target, fileDestination := parseCliCommand()
-	readAndWriteToFile(filePath, target, fileDestination)
+  err := readAndWriteToFile(filePath, target, fileDestination)
+  if err != nil{
+    fmt.Println("Error:", err.Error())
+  }
 }
